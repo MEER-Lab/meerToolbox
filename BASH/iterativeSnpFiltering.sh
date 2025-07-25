@@ -1,13 +1,6 @@
-#==================================================================================================
-#   File: 09_snpFiltering.sh
-#   Date: June 10, 2025
-#   Description: Filter vcf
-#--------------------------------------------------------------------------------------------------
-#	Authors: Jared Homola
-#==================================================================================================
 
-#Define alias for project root directory
-PROJ_ID=2505_mnBurbotStructure
+#Define alias for project root directory (e.g., 2505_mnBurbotStructure)
+PROJ_ID=
 
 MEER_DIR=/mnt/research/meerLab/2025/$PROJ_ID 
 SCR=/mnt/gs21/scratch/homolaj1/$PROJ_ID 
