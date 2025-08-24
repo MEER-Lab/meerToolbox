@@ -1,4 +1,4 @@
-missingnessPerSample <- function(gl) {
+gl.missingnessPerSample <- function(gl) {
   geno_matrix <- as.matrix(gl)
   prop_missing <- apply(geno_matrix, 1, function(x) mean(is.na(x)))
   result <- tibble(
@@ -7,3 +7,5 @@ missingnessPerSample <- function(gl) {
   )
   return(result)
 }
+
+
