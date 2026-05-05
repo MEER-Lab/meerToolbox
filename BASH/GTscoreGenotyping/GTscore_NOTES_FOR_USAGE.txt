@@ -1,0 +1,17 @@
+NOTES ABOUT USING THIS SCRIPT ORIGINALLY DEVELOPED BY PAUL ALBOSTA (WITH CODE TAKEN FROM THE GTSCORE DOCUMENTATION AVAILABLE ON GITHUB) AND MODIFIED BY AMY SPRINGER TO SOMEWHAT IMPROVE AUTOMATION:
+
+... this script definitely still needs work. 
+
+First, make sure ALL of the files contained within the GT_score directory are placed in the same folder as all your fastqs. These scripts are written such that they expect your fastq directory to be your working directory, and the script expects to find the GTscore program in the 'analysis' directory, as it is set up here. Basically, to set up your directories properly, you need to (a) place all your fastqs into this directory (GT_score), and (b) move your probe file of choice from the GTscore_primer_probe_files directory up one level into the GT_score directory. 
+
+The ONLY things you need to modify in the R-markdown script are the parameters on lines 10:21, the perl code on line 50, and potentially the genotyping threshold on line 37. Everything downstream is ready to go and will require zero modification. Names, folders, and files are all automatically generated using the information from lines 10:21. 
+
+When you modify the perl code on line 50, MAKE SURE your --prefix parameter matches the following code: concat(proj_num, proj_spec, "", sep = "_"). If it does not, it will mess up naming conventions downstream. Example prefix: 2501_Svit_
+
+Also make sure at this point that you have the right probe file in your fastq folder and have the right name for your probe file in your perl code 
+
+R-markdown might cry if you run the block on lines 10:21 with the green 'play' button because it wants the block from lines 25:39 to be run first. I just copy-paste lines 10:21 to get around this and then everything else can be run with the play button as per usual.
+
+If you follow the README instructions (I update this for every project I run as a record) genotyping should be pretty much plug and chug.
+
+you're going to need a good working version of perl on your computer to do any of this. Perl and Windows don't like to get along and a non-working or incorrectly compiled perl program is most likely where you're going to get stuck.

@@ -4,13 +4,11 @@ library(dbplyr)
 library(sf)
 library(tidyverse)
 
-
-
 # Define the path
-barcode_path <- "C:/Users/jared/OneDrive - Michigan State University/Shared Documents - MEER Lab/Projects/2025/2507_KsSdWaeSbfI/genotyping_2507_2521/dependencies"
+barcode_path <- "C:/Users/jared/OneDrive - Michigan State University/MEER Lab - Documents/Projects/2025/2519_mueBaselineDevelopment/genotyping_2519/dependencies"
 
 # List all .txt files
-txt_files <- list.files(path = barcode_path, pattern = "\\.txt$", full.names = TRUE)
+txt_files <- list.files(path = barcode_path, pattern = "barcodes\\.txt$", full.names = TRUE)
 
 # Read and bind all files, keeping only the second column
 sample_ids <- txt_files %>%
@@ -20,7 +18,7 @@ sample_ids <- txt_files %>%
 
 
 #Replace "C:/path/to/your/database.accdb" with the actual path
-db_path <- "C:/Users/jared/OneDrive/Desktop/meerLab_database.accdb"
+db_path <- "Z:/meerLab_database_be.accdb"
 
 # Establish the connection
 con <- dbConnect(odbc(),
@@ -33,10 +31,18 @@ samples <- tbl(con, "samples") %>% as_tibble()
 collections <- tbl(con, "collections") %>% as_tibble()
 locations <- tbl(con, "locations") %>% as_tibble()
 
+files <- read_table(paste0(barcode_path, "/filenames.txt"),
+                    col_names = FALSE)
+
 left_join(samples, collections) %>% 
   left_join(locations) %>% 
   select(sample_id, location_name) %>% 
-  filter(sample_id %in% sample_ids$sample_id)
+  filter(sample_id %in% sample_ids$sample_id) %>% 
+  filter(sample_id %in% files$X1) %>% 
+  write.table("C:/Users/jared/OneDrive - Michigan State University/MEER Lab - Documents/Projects/2025/2519_mueBaselineDevelopment/genotyping_2519/dependencies/pop.map",
+              quote = FALSE,
+              row.names = FALSE,
+              col.names = FALSE)
 
 
 # Close the connection

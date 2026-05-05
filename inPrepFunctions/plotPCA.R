@@ -49,44 +49,46 @@ plotPCA <- function(geno_obj, nf = 4, imputation_method = "mean") {
       panel.grid = element_blank()
     )
   
+  # Label style: colored text + white halo
+  label_style <- list(
+    fontface = "bold",
+    size = 4,
+    max.overlaps = Inf,
+    box.padding = 0.5,
+    point.padding = 0.5,
+    segment.color = "black",
+    segment.size = 0.3,
+    force = 5,
+    bg.color = "white",
+    bg.r = 0.15
+  )
+  
   # Plot 1: Axis 1 vs Axis 2
   plot_pca_1_2 <- ggplot(pca.df, aes(x = Axis1, y = Axis2, color = pop)) +
     geom_point(alpha = 0.5, size = 2) +
     stat_ellipse(type = "norm", level = 0.95) +
-    geom_text_repel(data = centroids,
-                    aes(label = pop),
-                    fontface = "bold",
-                    size = 5,
-                    max.overlaps = Inf,
-                    box.padding = 0.5,
-                    point.padding = 0.5,
-                    segment.color = "black",
-                    segment.size = 0.3,
-                    segment.curvature = 0) +
+    do.call(
+      geom_text_repel,
+      c(list(data = centroids, mapping = aes(label = pop, color = pop)), label_style)
+    ) +
     xlab(paste0("Axis 1 (", round(percent_var_explained[1], 1), "%)")) +
     ylab(paste0("Axis 2 (", round(percent_var_explained[2], 1), "%)")) +
     base_theme
   
-  # Plot 2: Axis 2 vs Axis 3
-  plot_pca_2_3 <- ggplot(pca.df, aes(x = Axis2, y = Axis3, color = pop)) +
+  # Plot 2: Axis 1 vs Axis 3
+  plot_pca_1_3 <- ggplot(pca.df, aes(x = Axis1, y = Axis3, color = pop)) +
     geom_point(alpha = 0.5, size = 2) +
     stat_ellipse(type = "norm", level = 0.95) +
-    geom_text_repel(data = centroids,
-                    aes(label = pop),
-                    fontface = "bold",
-                    size = 5,
-                    max.overlaps = Inf,
-                    box.padding = 0.5,
-                    point.padding = 0.5,
-                    segment.color = "black",
-                    segment.size = 0.3,
-                    segment.curvature = 0) +
-    xlab(paste0("Axis 2 (", round(percent_var_explained[2], 1), "%)")) +
+    do.call(
+      geom_text_repel,
+      c(list(data = centroids, mapping = aes(label = pop, color = pop)), label_style)
+    ) +
+    xlab(paste0("Axis 1 (", round(percent_var_explained[1], 1), "%)")) +
     ylab(paste0("Axis 3 (", round(percent_var_explained[3], 1), "%)")) +
     base_theme
   
   # Combine plots
-  combined_plots <- plot_pca_1_2 + plot_pca_2_3
+  combined_plots <- plot_pca_1_2 + plot_pca_1_3
   
   return(combined_plots)
 }

@@ -1,0 +1,40 @@
+3/21/2024 A. Springer and S. Straus
+
+This text file contains notes regarding the format of the primer probe files. 
+
+primer probe files: 
+
+allele 1 and allele 2 columns tell us the SNP loci (reference allele and alternate allele)
+
+Probe 1 and probe 2 are sequences around 25 bp long that are comprised of the snp itself plus a flanking region around 11-12 bp to the left of the snp and 14-15 bp to the right of the snp. It may or may not contain part of the primer sequence. 
+
+If the SNP is found within the primer, we will need to specify three distinct versions of the primer in the probe file
+So one SNP would then get three lines: one for each primer version, ex:
+
+primer version 1: ATTC
+primer version 2: ATCC
+primer version 3: AT[TC]C
+
+Not sure why just the bottom version is insufficient to denote this for the program; the fact that we have primer version A, primer version B, and primer version A/B suggests to me that someone wasn't sure which format the program wanted and so gave it all possible versions.
+
+Square brackets with two bases listed inside denote the presence of a SNP, and presumably tell the program that at position X, you may find either a T or a C, and both are considered to be a match for this primer. 
+
+Ex. AATTCG[AT]CA represents two separate sequences: either AATTCGACA OR AATTCGTCA
+
+The same may occur for microhaplotypes where SNPs are located < ~25 bp apart along a particular contig. In this case, the probe will need to have whichever SNP is NOT being considered put into square brackets so all haplotypes can be located. EX: 
+
+Allele1		Allele 2	Probe 1	 	Probe 2 	Primer
+G		C		GCATC[AT]T	CCATC[AT]T	AAAC
+T		A		[GC]CATCTT	[GC]CATCAT	AAAC
+
+In the above example, the first line is the probe for SNP G/C, found at position 1, while the second line is the probe for SNP T/A, found at position 6. Though unlikely, there are four possible haplotypes from this two-SNP microhaplotype: 
+
+GCATCAT
+GCATCTT
+CCATCAT
+CCATCTT
+
+(it's unlikely we would find all four possible haplotypes because the odds of recombination in a 5-bp region is astronomically low; these SNPs will likely show high linkage.
+
+For a SNP where (a) there are no other SNPs in the immediate surrounding region and (b) there are no SNPs located in the primer itself, there should only be one line per SNP in the primer probe file
+

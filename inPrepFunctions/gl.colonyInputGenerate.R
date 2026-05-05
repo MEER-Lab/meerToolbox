@@ -1,4 +1,4 @@
-gl.colonyInputGenerate.R <- function(genlight_obj, file_path,
+gl.colonyInputGenerate <- function(genlight_obj, file_path,
                                project_name = "Example1",
                                output_name = "Example1",
                                seed = 1234,
