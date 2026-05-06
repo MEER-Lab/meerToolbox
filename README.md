@@ -1,7 +1,4 @@
-# meerToolbox
-Set of functions commonly used by the Molecular and Evolutionary Ecology Lab at Michigan State University
-
-# meerToolbox <img src="main/MEER_Lab_Logo_F.png" align="right" height="139" />
+# meerToolbox <img src="https://raw.githubusercontent.com/MEER-Lab/meerToolbox/main/MEER_Lab_Logo_F.png" align="right" height="139" />
 
 The `meerToolbox` is an R package designed for Molecular and Evolutionary Ecology Lab at Michigan State University to streamline genomic data management and analysis pipelines. It provides standardized functions for database connectivity and genotyping workflows.
 
