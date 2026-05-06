@@ -1,13 +1,45 @@
-plotPCA <- function(geno_obj, nf = 4, imputation_method = "mean") {
-  suppressPackageStartupMessages({
-    library(adegenet)
-    library(dplyr)
-    library(ggplot2)
-    library(ggrepel)
-    library(ade4)
-    library(patchwork)
-  })
-  
+#' PCA plot for genind/genlight objects
+#'
+#' Performs a principal components analysis (PCA) on genetic data stored in
+#' a \code{genind} or \code{genlight} object and returns ggplot-based PCA
+#' scatterplots with 95\% confidence ellipses and population centroids.
+#'
+#' Two panels are produced: Axis 1 vs Axis 2 and Axis 1 vs Axis 3.
+#'
+#' @param geno_obj A \code{genind} or \code{genlight} object containing genotype
+#'   data and population information.
+#' @param nf Integer. Number of principal components to retain.
+#' @param imputation_method Character string passed to \code{adegenet::tab()}
+#'   specifying how missing values should be imputed (e.g. \code{"mean"}).
+#'
+#' @return A \code{patchwork} object containing two ggplot PCA panels.
+#'
+#' @details
+#' Genotypes are converted to an allele-frequency matrix using
+#' \code{adegenet::tab()} prior to PCA computation with
+#' \code{ade4::dudi.pca()}.
+#'
+#' Population-level centroids are calculated as the mean PCA scores for each
+#' population and labeled using \code{ggrepel}.
+#'
+#' @importFrom adegenet tab pop
+#' @importFrom ade4 dudi.pca
+#' @importFrom dplyr mutate group_by summarise
+#' @importFrom tibble as_tibble
+#' @importFrom ggplot2 ggplot aes geom_point stat_ellipse xlab ylab theme_classic theme
+#' @importFrom ggrepel geom_text_repel
+#' @importFrom patchwork `+`
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' data(nancycats)
+#' p <- plot_PCA(nancycats, nf = 4)
+#' p
+#' }
+
+plot_PCA <- function(geno_obj, nf = 4, imputation_method = "mean") {
   # Validate input
   if (!inherits(geno_obj, c("genlight", "genind"))) {
     stop("Input must be a 'genlight' or 'genind' object.")
