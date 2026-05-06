@@ -39,6 +39,7 @@ du -shc $LOC1 $LOC2 $LOC3
 
 # Estimating CPUs (--cpus-per-task): cat is a single thread processes, so only request 1 CPU
 
+
 # --- GENERATE SLURM BATCH SCRIPT ---
 cat <<EOF > run_concat_$PROJ_ID.sh
 #!/bin/bash
@@ -46,28 +47,25 @@ cat <<EOF > run_concat_$PROJ_ID.sh
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=16G
-#SBATCH -t 02:00:00
+#SBATCH -t 01:30:00
 #SBATCH -J concat_$PROJ_ID
 #SBATCH -o $MEER_DIR/stdout/concat_$PROJ_ID.o
 
-# Identify all unique sample prefixes across the three locations
-SAMPLES=\$(ls $LOC1/*.1.fq.gz $LOC2/*.1.fq.gz $LOC3/*.1.fq.gz 2>/dev/null | xargs -n 1 basename | sed 's/\.1\.fq\.gz//' | sort | uniq)
+# Improved sample discovery: Specifically look for 2528- prefix and strip extension
+SAMPLES=\$(ls $LOC1/2528-*.1.fastq.gz $LOC1/2528-*_R1.fastq.gz 2>/dev/null | xargs -n 1 basename | sed -E 's/(_R1\.fastq\.gz|\.1\.fastq\.gz)//' | sort | uniq)
 
 echo "Starting concatenation of samples..."
 
 for SAMPLE in \$SAMPLES; do
     echo "Processing: \$SAMPLE"
 
-    # Concatenate R1 files
-    # Uses 2>/dev/null so it doesn't crash if a sample is missing from one of the three runs
-    cat $LOC1/\$SAMPLE.1.fq.gz $LOC2/\$SAMPLE.1.fq.gz $LOC3/\$SAMPLE.1.fq.gz > $OUT_DIR/\$SAMPLE.1.fq.gz 2>/dev/null || true
-
-    # Concatenate R2 files
-    cat $LOC1/\$SAMPLE.2.fq.gz $LOC2/\$SAMPLE.2.fq.gz $LOC3/\$SAMPLE.2.fq.gz > $OUT_DIR/\$SAMPLE.2.fq.gz 2>/dev/null || true
+    # Use wildcards to catch the files regardless of minor naming differences
+    # This will merge matching files from LOC1 and LOC2 into your clean .1.fq.gz format
+    cat $LOC1/\${SAMPLE}*R1.fastq.gz $LOC2/\${SAMPLE}*R1.fastq.gz > $OUT_DIR/\${SAMPLE}.1.fq.gz 2>/dev/null || true
+    cat $LOC1/\${SAMPLE}*R2.fastq.gz $LOC2/\${SAMPLE}*R2.fastq.gz > $OUT_DIR/\${SAMPLE}.2.fq.gz 2>/dev/null || true
 done
 
 echo "Concatenation complete. Files located in: $OUT_DIR"
-
 scontrol show job \${SLURM_JOB_ID}
 EOF
 

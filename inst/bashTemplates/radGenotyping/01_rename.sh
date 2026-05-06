@@ -1,9 +1,14 @@
 #==================================================================================================
 #   File: 01_rename.sh
+#   Date: May 5, 2026
 #   Description: Standardize raw file names and move to scratch
 #--------------------------------------------------------------------------------------------------
 #   Author: Jared Homola
 #==================================================================================================
+
+
+##### Untested as of 5/6/2026 #####
+
 
 # --- USER DEFINED VARIABLES ---
 PROJ_ID=2505_mnBurbotStructure          ## Update to your MEER Lab project ID
