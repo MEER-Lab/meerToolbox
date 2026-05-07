@@ -43,6 +43,20 @@ import_gtscore_to_genind <- function(genepop_path,
   colnames(reads)[-1] <- clean_names(colnames(reads)[-1])
   indNames(obj) <- clean_names(indNames(obj))
   
+  # --- ADDED: DROP NTC SAMPLES ---
+  ntc_indices <- grepl("ntc", indNames(obj), ignore.case = TRUE)
+  if (any(ntc_indices)) {
+    ntc_names <- indNames(obj)[ntc_indices]
+    message(paste("NTC Filtering: Dropping", length(ntc_names), "NTC samples."))
+    
+    # Remove from genind
+    obj <- obj[!ntc_indices, ]
+    
+    # Remove from AlleleReads dataframe
+    reads <- reads[, !(colnames(reads) %in% ntc_names)]
+  }
+  # -------------------------------
+  
   # 5. Apply Depth Filter to Genind Matrix
   gen_mat <- tab(obj, NA.method = "asis")
   
@@ -85,9 +99,8 @@ import_gtscore_to_genind <- function(genepop_path,
   message(paste("Sample Filtering: Removing", length(inds_to_remove), 
                 "samples with >", sample_max_missing*100, "% missingness"))
   
-  # Optional printing of removed sample names
   if (print_removed_inds && length(inds_to_remove) > 0) {
-    cat("\nRemoved Individuals:\n")
+    cat("\nRemoved Individuals (Missingness):\n")
     cat(paste(inds_to_remove, collapse = "\n"), "\n\n")
   }
   
