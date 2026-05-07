@@ -46,7 +46,7 @@
 #' p <- plot_PCA(nancycats, nf = 4)
 #' p
 #' }
-plot_PCA <- function(geno_obj, nf = 4, imputation_method = "mean") {
+plot_pca <- function(geno_obj, nf = 4, imputation_method = "mean") {
   
   # Validate input
   if (!inherits(geno_obj, c("genlight", "genind"))) {
