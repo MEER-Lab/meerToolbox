@@ -9,6 +9,7 @@
 #' @param dup_removal Proportion of reads retained after PCR duplicate removal (default 0.75)
 #' @param desired_depth Target coverage depth per locus (default 40)
 #'
+#' @export
 calculate_bestrad_sequencing <- function(n_samples, 
                                          c_val, 
                                          enzyme, 

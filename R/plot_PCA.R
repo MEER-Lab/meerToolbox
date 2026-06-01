@@ -43,7 +43,7 @@
 #' @examples
 #' \dontrun{
 #' data(nancycats)
-#' p <- plot_PCA(nancycats, nf = 4)
+#' p <- plot_pca(nancycats, nf = 4)
 #' p
 #' }
 plot_pca <- function(geno_obj, nf = 4, imputation_method = "mean") {
@@ -120,6 +120,7 @@ plot_pca <- function(geno_obj, nf = 4, imputation_method = "mean") {
   ) +
     ggplot2::geom_point(alpha = 0.5, size = 2) +
     ggplot2::stat_ellipse(type = "norm", level = 0.95) +
+    ggplot2::coord_cartesian() + 
     do.call(
       ggrepel::geom_text_repel,
       c(
@@ -143,6 +144,7 @@ plot_pca <- function(geno_obj, nf = 4, imputation_method = "mean") {
   ) +
     ggplot2::geom_point(alpha = 0.5, size = 2) +
     ggplot2::stat_ellipse(type = "norm", level = 0.95) +
+    ggplot2::coord_cartesian() + 
     do.call(
       ggrepel::geom_text_repel,
       c(

@@ -5,6 +5,8 @@
 #' @param use_log_scale Logical; if TRUE, uses log10 scale for depths (default FALSE)
 #' @param jitter Logical; if TRUE, adds small jitter to points (default TRUE)
 #'
+#' @export
+
 plot_all_gtscore_loci <- function(file_path, outdir, use_log_scale = FALSE, jitter = TRUE) {
   
   # 1. Dependency Check
@@ -58,8 +60,7 @@ plot_all_gtscore_loci <- function(file_path, outdir, use_log_scale = FALSE, jitt
       geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
       theme_bw(base_size = 12) +
       # Fix coordinates and set identical limits for x and y
-      coord_fixed(ratio = 1) + 
-      lims(x = c(0, max_val), y = c(0, max_val)) +
+      coord_fixed(ratio = 1, xlim = c(0, max_val), ylim = c(0, max_val), expand = TRUE) +
       labs(
         title = paste("Allele Balance:", locus_name),
         subtitle = paste("n =", nrow(dat), "samples"),
@@ -85,8 +86,3 @@ plot_all_gtscore_loci <- function(file_path, outdir, use_log_scale = FALSE, jitt
   
   message(paste("Batch plotting complete. Plots saved to:", outdir))
 }
-# --- Test Case Execution ---
-input_file <- "C:/Users/jared/OneDrive - Michigan State University/MEER Lab - Documents/Projects/2026/2605_waePBT2025/genotyping_2605/AlleleReads_singleSNPs.txt"
-output_path <- "C:/Users/jared/OneDrive - Michigan State University/MEER Lab - Documents/Projects/2026/2605_waePBT2025/genotyping_2605/plots/"
-
-plot_all_gtscore_loci(file_path = input_file, outdir = output_path)

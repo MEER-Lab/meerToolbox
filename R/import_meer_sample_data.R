@@ -4,6 +4,8 @@
 #' @param db_path Path to the MS Access database (Default: MEER Lab Backend)
 #' @param select_cols A character vector of column names. Defaults to everything().
 #'
+#' @export
+
 import_meer_sample_data <- function(gen_obj, 
                                  db_path = "Z:/meerLab_database_be.accdb", 
                                  select_cols = NULL) {

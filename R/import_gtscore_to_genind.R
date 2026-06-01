@@ -7,6 +7,7 @@
 #' @param sample_max_missing Numeric; max proportion of missing genotypes allowed for a sample (0-1)
 #' @param print_removed_inds Logical; if TRUE, prints names of samples removed during filtering
 #'
+#' @export
 import_gtscore_to_genind <- function(genepop_path, 
                                      allelereads_path, 
                                      min_depth = 10, 
